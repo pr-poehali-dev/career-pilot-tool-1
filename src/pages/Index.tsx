@@ -8,10 +8,17 @@ import Icon from '@/components/ui/icon';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Separator } from '@/components/ui/separator';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
 
 const Index = () => {
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
   const [profileOpen, setProfileOpen] = useState(false);
+  const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [supportOpen, setSupportOpen] = useState(false);
 
   const userStats = {
     name: 'Александра Иванова',
@@ -106,7 +113,10 @@ const Index = () => {
                     <Button 
                       variant="ghost" 
                       className="w-full justify-start gap-3 h-12"
-                      onClick={() => setProfileOpen(false)}
+                      onClick={() => {
+                        setProfileOpen(false);
+                        setPersonalInfoOpen(true);
+                      }}
                     >
                       <Icon name="User" size={20} />
                       <span>Личная информация</span>
@@ -115,7 +125,10 @@ const Index = () => {
                     <Button 
                       variant="ghost" 
                       className="w-full justify-start gap-3 h-12"
-                      onClick={() => setProfileOpen(false)}
+                      onClick={() => {
+                        setProfileOpen(false);
+                        setSettingsOpen(true);
+                      }}
                     >
                       <Icon name="Settings" size={20} />
                       <span>Настройки</span>
@@ -124,7 +137,10 @@ const Index = () => {
                     <Button 
                       variant="ghost" 
                       className="w-full justify-start gap-3 h-12"
-                      onClick={() => setProfileOpen(false)}
+                      onClick={() => {
+                        setProfileOpen(false);
+                        setSupportOpen(true);
+                      }}
                     >
                       <Icon name="HelpCircle" size={20} />
                       <span>Служба поддержки</span>
@@ -446,6 +462,206 @@ const Index = () => {
           </TabsContent>
         </Tabs>
       </main>
+
+      <Dialog open={personalInfoOpen} onOpenChange={setPersonalInfoOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-2xl">
+              <Icon name="User" className="text-primary" />
+              Личная информация
+            </DialogTitle>
+            <DialogDescription>
+              Ваши персональные данные и карьерная информация
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Имя</Label>
+                <Input value="Александра" disabled />
+              </div>
+              <div className="space-y-2">
+                <Label>Фамилия</Label>
+                <Input value="Иванова" disabled />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Email</Label>
+              <Input value="a.ivanova@t1.ru" disabled />
+              </div>
+            <div className="space-y-2">
+              <Label>Должность</Label>
+              <Input value={userStats.position} disabled />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Грейд</Label>
+                <Input value={userStats.grade} disabled />
+              </div>
+              <div className="space-y-2">
+                <Label>Дата начала работы</Label>
+                <Input value="15.03.2020" disabled />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Департамент</Label>
+              <Input value="Разработка веб-приложений" disabled />
+            </div>
+            <div className="space-y-2">
+              <Label>Руководитель</Label>
+              <Input value="Петров Михаил Александрович" disabled />
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={settingsOpen} onOpenChange={setSettingsOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-2xl">
+              <Icon name="Settings" className="text-primary" />
+              Настройки
+            </DialogTitle>
+            <DialogDescription>
+              Управление уведомлениями и параметрами аккаунта
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6 py-4">
+            <div>
+              <h3 className="font-semibold mb-4 flex items-center gap-2">
+                <Icon name="Bell" size={18} />
+                Уведомления
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <div className="font-medium">Новые курсы</div>
+                    <div className="text-sm text-muted-foreground">Получать уведомления о новых образовательных программах</div>
+                  </div>
+                  <Button variant="outline" size="sm">Включено</Button>
+                </div>
+                <div className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <div className="font-medium">Запросы менторов</div>
+                    <div className="text-sm text-muted-foreground">Уведомления о доступности наставников</div>
+                  </div>
+                  <Button variant="outline" size="sm">Включено</Button>
+                </div>
+                <div className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <div className="font-medium">Достижения</div>
+                    <div className="text-sm text-muted-foreground">Уведомления о разблокированных достижениях</div>
+                  </div>
+                  <Button variant="outline" size="sm">Включено</Button>
+                </div>
+              </div>
+            </div>
+            <Separator />
+            <div>
+              <h3 className="font-semibold mb-4 flex items-center gap-2">
+                <Icon name="Eye" size={18} />
+                Приватность
+              </h3>
+              <div className="space-y-3">
+                <div className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <div className="font-medium">Показывать профиль</div>
+                    <div className="text-sm text-muted-foreground">Ваш профиль виден другим сотрудникам</div>
+                  </div>
+                  <Button variant="outline" size="sm">Публичный</Button>
+                </div>
+                <div className="flex items-center justify-between p-3 border rounded-lg">
+                  <div>
+                    <div className="font-medium">Достижения</div>
+                    <div className="text-sm text-muted-foreground">Показывать ваши достижения в профиле</div>
+                  </div>
+                  <Button variant="outline" size="sm">Видимо</Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={supportOpen} onOpenChange={setSupportOpen}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-2xl">
+              <Icon name="HelpCircle" className="text-primary" />
+              Служба поддержки
+            </DialogTitle>
+            <DialogDescription>
+              Возникли вопросы? Мы готовы помочь!
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-6 py-4">
+            <div className="grid grid-cols-2 gap-4">
+              <Card className="p-4 hover:border-primary transition-all cursor-pointer">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Icon name="MessageCircle" className="text-primary" size={20} />
+                  </div>
+                  <h4 className="font-semibold">Онлайн-чат</h4>
+                </div>
+                <p className="text-sm text-muted-foreground">Среднее время ответа: 5 мин</p>
+              </Card>
+              <Card className="p-4 hover:border-primary transition-all cursor-pointer">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                    <Icon name="Mail" className="text-primary" size={20} />
+                  </div>
+                  <h4 className="font-semibold">Email</h4>
+                </div>
+                <p className="text-sm text-muted-foreground">support@t1-careerpilot.ru</p>
+              </Card>
+            </div>
+            
+            <div className="space-y-4">
+              <div>
+                <Label>Тема обращения</Label>
+                <Input placeholder="Введите тему вашего вопроса" className="mt-2" />
+              </div>
+              <div>
+                <Label>Описание проблемы</Label>
+                <Textarea 
+                  placeholder="Опишите подробно ваш вопрос или проблему..." 
+                  className="mt-2 min-h-[120px]" 
+                />
+              </div>
+              <Button className="w-full" size="lg">
+                <Icon name="Send" className="mr-2" size={18} />
+                Отправить запрос
+              </Button>
+            </div>
+
+            <Separator />
+
+            <div>
+              <h3 className="font-semibold mb-3">Часто задаваемые вопросы</h3>
+              <div className="space-y-2">
+                <Button variant="ghost" className="w-full justify-start text-left h-auto py-3">
+                  <div>
+                    <div className="font-medium">Как получить больше ЕИК?</div>
+                    <div className="text-sm text-muted-foreground">Баланс пополняется за выполнение задач и достижений</div>
+                  </div>
+                </Button>
+                <Button variant="ghost" className="w-full justify-start text-left h-auto py-3">
+                  <div>
+                    <div className="font-medium">Как запросить встречу с ментором?</div>
+                    <div className="text-sm text-muted-foreground">Перейдите в раздел "Менторы" и нажмите кнопку запроса</div>
+                  </div>
+                </Button>
+                <Button variant="ghost" className="w-full justify-start text-left h-auto py-3">
+                  <div>
+                    <div className="font-medium">Где посмотреть план развития?</div>
+                    <div className="text-sm text-muted-foreground">Откройте вкладку "Навигатор" на главной странице</div>
+                  </div>
+                </Button>
+              </div>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       <footer className="border-t mt-16 py-8 bg-card">
         <div className="container mx-auto px-4 text-center text-sm text-muted-foreground">
