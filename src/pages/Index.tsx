@@ -6,9 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import Icon from '@/components/ui/icon';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Separator } from '@/components/ui/separator';
 
 const Index = () => {
   const [selectedSkill, setSelectedSkill] = useState<string | null>(null);
+  const [profileOpen, setProfileOpen] = useState(false);
 
   const userStats = {
     name: 'Александра Иванова',
@@ -80,9 +83,66 @@ const Index = () => {
               <Button variant="ghost" size="sm">
                 <Icon name="Bell" size={18} />
               </Button>
-              <Avatar>
-                <AvatarFallback className="bg-primary text-primary-foreground">АИ</AvatarFallback>
-              </Avatar>
+              <Sheet open={profileOpen} onOpenChange={setProfileOpen}>
+                <SheetTrigger asChild>
+                  <Avatar className="cursor-pointer hover:ring-2 hover:ring-primary transition-all">
+                    <AvatarFallback className="bg-primary text-primary-foreground">АИ</AvatarFallback>
+                  </Avatar>
+                </SheetTrigger>
+                <SheetContent className="w-80">
+                  <SheetHeader>
+                    <SheetTitle className="flex items-center gap-3">
+                      <Avatar className="w-12 h-12">
+                        <AvatarFallback className="bg-primary text-primary-foreground text-lg">АИ</AvatarFallback>
+                      </Avatar>
+                      <div className="text-left">
+                        <div className="font-semibold">{userStats.name}</div>
+                        <div className="text-sm text-muted-foreground font-normal">{userStats.position}</div>
+                      </div>
+                    </SheetTitle>
+                  </SheetHeader>
+                  
+                  <div className="mt-6 space-y-1">
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start gap-3 h-12"
+                      onClick={() => setProfileOpen(false)}
+                    >
+                      <Icon name="User" size={20} />
+                      <span>Личная информация</span>
+                    </Button>
+                    
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start gap-3 h-12"
+                      onClick={() => setProfileOpen(false)}
+                    >
+                      <Icon name="Settings" size={20} />
+                      <span>Настройки</span>
+                    </Button>
+                    
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start gap-3 h-12"
+                      onClick={() => setProfileOpen(false)}
+                    >
+                      <Icon name="HelpCircle" size={20} />
+                      <span>Служба поддержки</span>
+                    </Button>
+                    
+                    <Separator className="my-2" />
+                    
+                    <Button 
+                      variant="ghost" 
+                      className="w-full justify-start gap-3 h-12 text-destructive hover:text-destructive"
+                      onClick={() => setProfileOpen(false)}
+                    >
+                      <Icon name="LogOut" size={20} />
+                      <span>Выход из аккаунта</span>
+                    </Button>
+                  </div>
+                </SheetContent>
+              </Sheet>
             </nav>
           </div>
         </div>
