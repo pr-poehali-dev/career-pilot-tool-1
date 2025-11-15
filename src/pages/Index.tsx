@@ -242,19 +242,19 @@ const Index = () => {
                     {careerPath.map((step, index) => (
                       <div key={index} className="relative flex items-start gap-4 pl-2">
                         <div className={`relative z-10 w-12 h-12 rounded-full flex items-center justify-center ${
-                          step.status === 'completed' ? 'bg-green-500' :
+                          step.status === 'completed' ? 'bg-primary' :
                           step.status === 'current' ? 'bg-primary' :
-                          step.status === 'available' ? 'bg-secondary' :
+                          step.status === 'available' ? 'bg-muted' :
                           'bg-muted'
                         }`}>
                           <Icon 
                             name={
                               step.status === 'completed' ? 'CheckCircle2' :
                               step.status === 'current' ? 'Target' :
-                              step.status === 'available' ? 'Unlock' :
+                              step.status === 'available' ? 'Circle' :
                               'Lock'
                             } 
-                            className="text-white" 
+                            className={step.status === 'completed' || step.status === 'current' ? 'text-white' : 'text-muted-foreground'} 
                             size={24} 
                           />
                         </div>
