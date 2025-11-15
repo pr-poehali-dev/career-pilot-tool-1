@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
@@ -19,6 +19,9 @@ const Index = () => {
   const [personalInfoOpen, setPersonalInfoOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [supportOpen, setSupportOpen] = useState(false);
+  const [animatedProgress, setAnimatedProgress] = useState(0);
+  const [animatedSkills, setAnimatedSkills] = useState<{[key: string]: number}>({});
+  const [animatedReadiness, setAnimatedReadiness] = useState({ tech: 0, leadership: 0, project: 0 });
 
   const userStats = {
     name: 'Александра Иванова',
@@ -74,6 +77,30 @@ const Index = () => {
       default: return 'bg-gray-500';
     }
   };
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setAnimatedProgress(userStats.gradeProgress);
+    }, 300);
+
+    const skillTimer = setTimeout(() => {
+      const skillsMap: {[key: string]: number} = {};
+      skills.forEach(skill => {
+        skillsMap[skill.name] = skill.level;
+      });
+      setAnimatedSkills(skillsMap);
+    }, 500);
+
+    const readinessTimer = setTimeout(() => {
+      setAnimatedReadiness({ tech: 75, leadership: 52, project: 88 });
+    }, 400);
+
+    return () => {
+      clearTimeout(timer);
+      clearTimeout(skillTimer);
+      clearTimeout(readinessTimer);
+    };
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
@@ -264,12 +291,12 @@ const Index = () => {
                             <Badge variant="outline">{step.year}</Badge>
                           </div>
                           {step.status === 'current' && (
-                            <div className="mt-3">
+                            <div className="mt-3 animate-fade-in">
                               <div className="flex items-center justify-between text-sm mb-2">
                                 <span className="text-muted-foreground">Прогресс до Senior</span>
-                                <span className="font-semibold">{userStats.gradeProgress}%</span>
+                                <span className="font-semibold transition-all duration-1000">{animatedProgress}%</span>
                               </div>
-                              <Progress value={userStats.gradeProgress} className="h-2" />
+                              <Progress value={animatedProgress} className="h-2 transition-all duration-1000" />
                             </div>
                           )}
                         </div>
@@ -290,25 +317,25 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg animate-slide-up" style={{animationDelay: '0.1s'}}>
                     <span className="font-medium">Технические навыки</span>
                     <div className="flex items-center gap-3">
-                      <Progress value={75} className="w-32 h-2" />
-                      <span className="font-bold text-primary">75%</span>
+                      <Progress value={animatedReadiness.tech} className="w-32 h-2 transition-all duration-1000" />
+                      <span className="font-bold text-primary transition-all duration-1000">{animatedReadiness.tech}%</span>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg animate-slide-up" style={{animationDelay: '0.2s'}}>
                     <span className="font-medium">Leadership</span>
                     <div className="flex items-center gap-3">
-                      <Progress value={52} className="w-32 h-2" />
-                      <span className="font-bold text-primary">52%</span>
+                      <Progress value={animatedReadiness.leadership} className="w-32 h-2 transition-all duration-1000" />
+                      <span className="font-bold text-primary transition-all duration-1000">{animatedReadiness.leadership}%</span>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg">
+                  <div className="flex items-center justify-between p-4 bg-muted/50 rounded-lg animate-slide-up" style={{animationDelay: '0.3s'}}>
                     <span className="font-medium">Проектный опыт</span>
                     <div className="flex items-center gap-3">
-                      <Progress value={88} className="w-32 h-2" />
-                      <span className="font-bold text-primary">88%</span>
+                      <Progress value={animatedReadiness.project} className="w-32 h-2 transition-all duration-1000" />
+                      <span className="font-bold text-primary transition-all duration-1000">{animatedReadiness.project}%</span>
                     </div>
                   </div>
                   <Button className="w-full mt-4" size="lg">
@@ -334,7 +361,8 @@ const Index = () => {
                   {skills.map((skill, index) => (
                     <div 
                       key={index}
-                      className="p-4 border rounded-lg hover:border-primary transition-all cursor-pointer hover:shadow-md"
+                      className="p-4 border rounded-lg hover:border-primary transition-all cursor-pointer hover:shadow-md animate-scale-in"
+                      style={{animationDelay: `${index * 0.1}s`}}
                       onClick={() => setSelectedSkill(skill.name)}
                     >
                       <div className="flex items-center justify-between mb-2">
@@ -342,9 +370,9 @@ const Index = () => {
                           <h4 className="font-semibold">{skill.name}</h4>
                           <p className="text-xs text-muted-foreground">{skill.category}</p>
                         </div>
-                        <Badge variant="secondary">{skill.level}%</Badge>
+                        <Badge variant="secondary" className="transition-all duration-500">{animatedSkills[skill.name] || 0}%</Badge>
                       </div>
-                      <Progress value={skill.level} className="h-2" />
+                      <Progress value={animatedSkills[skill.name] || 0} className="h-2 transition-all duration-1000" />
                     </div>
                   ))}
                 </div>
